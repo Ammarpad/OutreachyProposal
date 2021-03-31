@@ -73,6 +73,6 @@ append_hello(wikidata, 'User:Ammarpad/Outreachy 1')
 # Load sandbox item. Print its name and English label
 load_wikidata_item(wikidata, 'Q4115189'):
 
-# Add claim (prop: P5, value: Q5) to sandbox item (Q4115189)
+# Add claim (prop: P31, value: Q5) to sandbox item (Q4115189)
 # https://www.wikidata.org/w/index.php?title=Q4115189&diff=prev&oldid=1393629723&diffmode=source
 add_claim_to_item(wikidata, 'Q4115189', 'P31', 'Q5')
