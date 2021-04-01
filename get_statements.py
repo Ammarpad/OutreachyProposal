@@ -6,9 +6,11 @@ import re
 def get_statement_from_article():
     """
     This parses an article and attempts to get where a certain
-    statement is used. It also checks the Item page in the repo
-    to comparse whether the statement we got is correct or in sync
-    with what is currently in the repo.
+    statement is used (In this case author statement).
+    It also then checks the Item page in the repo to let us see
+    whether the statement we got is correct or is at least in sync
+    with what is currently in the repo. Both values got are then
+    printed out.
     """
 
     # Connect to French Wikipedia
@@ -50,7 +52,7 @@ def get_statement_from_article():
 
             print('The Author name from parsing the article is: ' + author_name
                 + ' and the Author name from the item page is: ' + author_name2)
-        return 1
+            return 1
     else:
         print('There was a problem. The statement cannot be found')
         return 0
@@ -64,3 +66,4 @@ def get_statement_from_article():
 # >>> get_statements.get_statement_from_article()
 # Result: author (P50) =  Frank Miller
 # The Author name from parsing the article is:  Frank Miller and the Author name from the item page is: Frank Miller
+# 1
