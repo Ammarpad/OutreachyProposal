@@ -159,6 +159,7 @@ get_statement_from_infobox(enwiki, 'Roberts International Airport', '[(.*)]?serv
 # Result: place served by transport hub (P931) = [[Monrovia]], Liberia
 # The place served by transport hub (P931) from parsing the article is: [[Monrovia]], Liberia and the  place served by transport hub (P931) from the item page is: Monrovia
 
+# British Phycological Society, inception (P571)
 get_statement_from_infobox(enwiki, 'British Phycological Society', '(formation|inception|started|founded)', 'P571')
 # Result: inception (P571) = 1952
 # The inception (P571) from parsing the article is: 1952 and the  inception (P571) from the item page is: 1952-07-01T00:00:00Z
