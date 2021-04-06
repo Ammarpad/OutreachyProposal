@@ -3,7 +3,30 @@
 import pywikibot
 import re
 
-def get_statement_from_infobox(wiki, title, key, pid):
+def get_statement(wiki, title, key, pid, source=None, ret=False):
+    """
+    Convenience function to access the two key functions that do the heavy work
+
+    @param wiki: Wiki site pywikibot.Site
+    @param title: The article title
+    @param key: The key to search for (a simple string or subregex)
+    @param pid: The property id
+    @param source: likely location to find the fact (e.g: infobox or just entire text)
+    @param ret: Return the result instead of printing
+    """
+    if source == 'infobox':
+        result = get_statement_from_infobox(wiki, title, key, pid, ret)
+    elif source == 'text':
+        result = get_statement_from_text(wiki, title, key, pid, ret)
+    else:
+        result = None
+
+    if ret:
+        return result
+    else:
+        return 0
+
+def get_statement_from_infobox(wiki, title, key, pid, ret=False):
     """
     This searches an article and attempts to get where a certain
     statement is used. It also then checks the Item page in the
@@ -15,6 +38,7 @@ def get_statement_from_infobox(wiki, title, key, pid):
     @param title: The article title
     @param key: The key to search for (a simple string or subregex)
     @param pid: The property id
+    @param ret: Return the result instead of printing
     """
     page = pywikibot.Page(wiki, title)
 
@@ -66,35 +90,97 @@ def get_statement_from_infobox(wiki, title, key, pid):
         needs_extraction = "{{coord|" in value or "{{Coord|" in value
         if needs_extraction:
             value = re.findall(r'-?\d+\.?\d*', value)
-            value = value[0] + ', ' + value[1]
 
+        result = {}
         # First result from manual search
-        print(f'Result: {prop} = {value}')
+        if not ret:
+            print(f'Result: {prop} = {value}')
+        else:
+            result['id'] = pid
+            result['title'] = title
+            result['value'] = value
+            result['repo_value'] = None
 
         item = page.data_item()
         item_dict = item.get()
 
-        for claim in item_dict['claims'][pid]:
-            claim_target = claim.getTarget()
-            if isinstance(claim_target, pywikibot.WbQuantity):
-               value2 = claim_target.amount
-            elif isinstance(claim_target, pywikibot.Coordinate):
-                value2 = str(claim_target.lat) + ', ' + str(claim_target.lon)
-            elif isinstance(claim_target, pywikibot.WbTime):
-                value2 = claim_target.toTimestamp()
-            elif isinstance(claim_target, pywikibot.FilePage):
-                value2 = claim_target.title()
-            else:
-                claim_dict = claim_target.get()
-                value2 = claim_dict['labels']['en']
+        # Check the repo in case the claim already exists
+        value2 = check_repo(page.data_item(), pid, ret)
 
-            # Second result from repo
+        if not ret:
             print(f'The {prop} from parsing the article is: {value}'
                 + f' and the  {prop} from the item page is: {value2}\n')
             return 1
+        else:
+            result['repo_value'] = value2
+        return result
     else:
         print('There was a problem. The statement cannot be found 0')
         return 0
+
+def get_statement_from_text(wiki, title, regex, pid, ret=False):
+    """
+    Variant of get_statement_from_infobox() which uses the expanded page
+    text. Slower, but can find facts hidden in template and other wikitext
+    nesting logic.
+    Parameters same as get_statement_from_infobox()
+    """
+    page = pywikibot.Page(wiki, title)
+
+    if page.isRedirectPage():
+        page = page.getRedirectTarget()
+
+    page_source = page.expand_text(True)
+
+    result = re.search(r'%s' % regex, page_source, re.I)
+    value = {'repo_value' : None}
+
+    repo_check = check_repo(page.data_item(), pid)
+    if repo_check:
+        value['repo_value'] = repo_check
+
+    if result:
+        val = result.group(result.lastindex)
+        if ret:
+            value['id'] = pid
+            value['title'] = title
+            value['value'] = val
+            return value
+        else:
+            print('Found: %s' % val)
+            return 1
+
+    if not ret: print('No result was found')
+    return None
+
+def check_repo(item, p_id):
+    """
+    Checks the repo to find whether a particular claim already exists
+    on the target item.
+    @param item, the item
+    @param p_id: the property id
+    """
+    item_dict = item.get()
+    value = None
+
+    for claim in item_dict['claims'].get(p_id, None) or {}:
+        claim_target = claim.getTarget()
+        if isinstance(claim_target, pywikibot.WbQuantity):
+           value = claim_target.amount
+        elif isinstance(claim_target, pywikibot.Coordinate):
+            value = str(claim_target.lat) + ', ' + str(claim_target.lon)
+        elif isinstance(claim_target, pywikibot.WbTime):
+            value = claim_target.toTimestamp()
+        elif isinstance(claim_target, pywikibot.FilePage):
+            value = claim_target.title()
+        elif isinstance(claim_target, pywikibot.ItemPage):
+            claim_dict = claim_target.get()
+            value = claim_dict['labels']['en']
+        else:
+            value = claim_target
+
+        return value
+
 
 """RUN OUTPUT"""
 if __name__ == '__main__':
