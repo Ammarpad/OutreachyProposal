@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+sys.path.append(os.environ['PYWIKIBOT_DIR'])
+
 import re
 import pywikibot
 import get_statements2
@@ -118,6 +122,34 @@ def add_statement(page, value, p_id):
         print('Error adding the claim: %s' % str(e) )
         return 0
 
+def add_qualifiers(enwiki):
+    """
+    Add qualifiers to an existing claim
+    """
+    repo = enwiki.data_repository()
+
+    data = [
+        # Add number of subscribers qualifier to claim P2002 of entity x
+        ['Q100273559', 'P2002', 'P3744', pywikibot.WbQuantity(831000, site=repo)],
+        ['Q3152360', 'P2002', 'P3744', pywikibot.WbQuantity(12600, site=repo)]
+    ]
+
+    added = skipped = 0
+    for item_id, claim_id, prop_id, value in data:
+        res = outreachyscript.add_qualifier(repo, item_id, claim_id, prop_id, value)
+        if res:
+            added += 1
+        else:
+            skipped += 1
+
+    if added: print('Done. Added %s qualifiers' % added)
+    if skipped: print('%s qualifiers were skipped' % skipped)
+
+    return 1
+
 if __name__ == '__main__':
     enwiki = pywikibot.Site('en', 'wikipedia')
+
+    # Finally do the work
     add_statements(enwiki)
+    add_qualifiers(enwiki)

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+import os
+import sys
+sys.path.append(os.environ['PYWIKIBOT_DIR'])
+
 import pywikibot
 
 def print_outreachy_page(site, title):
@@ -80,6 +84,31 @@ def add_claim_to_item(repo, item_id, prop_id, value, summary):
     print('New claim saved!')
     return 1
 
+def add_qualifier(repo, item_id, claim_id, prop_id, target):
+    """
+    This adds new qualifier to an existing claim
+    @param repo DataSite
+    @param item_id entity id where to do the work
+    @param prop_id the propety id of the claim to add qualifier on
+    @param claim_id the propety id of the claim (qualifier) to add
+    @param target value of the claim
+    """
+    item = pywikibot.ItemPage(repo, item_id)
+    claims = item.get()['claims']
+    claim = claims.get(claim_id)[0] or None
+
+    if not claim:
+        return 0
+
+    qualifier = pywikibot.Claim(repo, prop_id)
+    qualifier.setTarget(target)
+
+    try:
+        claim.addQualifier(qualifier, summary=u'Adding a qualifier.')
+        return 1
+    except ValueError:
+       return 0
+
 """RUNNING SOME FUNCTIONS OF THE SCRIPT"""
 if __name__ == '__main__':
     enwiki = pywikibot.Site('en', 'wikipedia')
@@ -120,7 +149,7 @@ if __name__ == '__main__':
     # >>>
 
     # Load sandbox item. Print its name and English label
-    load_wikidata_item(wikidata, 'Q4115189'):
+    load_wikidata_item(wikidata, 'Q4115189')
 
     # MacBook:userscripts Ammar$ python
     # Python 3.8.0 (v3.8.0:fa919fdf25, Oct 14 2019, 10:23:27)
