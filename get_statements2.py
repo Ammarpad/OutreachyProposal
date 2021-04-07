@@ -109,7 +109,7 @@ def get_statement_from_infobox(wiki, title, key, pid, ret=False):
         item_dict = item.get()
 
         # Check the repo in case the claim already exists
-        value2 = check_repo(page.data_item(), pid, ret)
+        value2 = check_repo(page.data_item(), pid)
 
         if not ret:
             print(f'The {prop} from parsing the article is: {value}'

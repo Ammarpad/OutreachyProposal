@@ -9,6 +9,14 @@ import pywikibot
 import get_statements2
 import outreachyscript
 
+def main():
+    enwiki = pywikibot.Site('en', 'wikipedia')
+
+    # Do all the work
+    add_statements(enwiki)
+    add_qualifiers(enwiki)
+    add_references(enwiki)
+
 def add_statements(enwiki):
     """
     Queries articles for potential statements to add to repo.
@@ -89,15 +97,13 @@ def add_statement(page, value, p_id):
         match = re.search(r'\[\[(.*?)\]\]', title)
         if match:
             title = match.group(1)
+
         match = re.search(r'..?:+(.*)', title)
         if match:
             title = match.group(1)
-        match = re.match(r'\{\{(.*)\|(.*)\}\}', title)
 
+        match = re.match(r'\{\{(.*)\|(.*)\}\}', title)
         if match:
-            if 'currency' in title:
-               s = title.split('|')
-            else:
               title = match.group(2)
 
         return title
@@ -115,8 +121,7 @@ def add_statement(page, value, p_id):
         value = title
 
     try:
-        s = "Adding claim"
-        outreachyscript.add_claim_to_item(repo, page_item, p_id, value, summary=s)
+        outreachyscript.add_claim_to_item(repo, page_item, p_id, value, summary=u"Adding claim")
         return 1
     except pywikibot.Error as e:
         print('Error adding the claim: %s' % str(e) )
@@ -173,9 +178,4 @@ def add_references(enwiki):
     return 1
 
 if __name__ == '__main__':
-    enwiki = pywikibot.Site('en', 'wikipedia')
-
-    # Finally do the work
-    add_statements(enwiki)
-    add_qualifiers(enwiki)
-    add_references(enwiki)
+    main()

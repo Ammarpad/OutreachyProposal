@@ -56,9 +56,10 @@ def add_claim_to_item(repo, item_id, prop_id, value, summary):
     """
     datatype = pywikibot.PropertyPage(repo, prop_id).type
     if datatype == 'wikibase-item':
-        value = pywikibot.ItemPage(site, value)
+        value = pywikibot.ItemPage(repo, value)
     elif datatype == 'commonsMedia':
-        value = pywikibot.FilePage(site, value)
+        commons = pywikibot.Site('commons', 'commons')
+        value = pywikibot.FilePage(commons, value)
     elif datatype == 'globe-coordinate':
         value = pywikibot.Coordinate(value[0], value[1])
     elif datatype == 'quantity':
