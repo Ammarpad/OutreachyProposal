@@ -147,9 +147,13 @@ def add_qualifiers(enwiki):
 
     return 1
 
+def add_references(enwiki):
+    pass
+
 if __name__ == '__main__':
     enwiki = pywikibot.Site('en', 'wikipedia')
 
     # Finally do the work
     add_statements(enwiki)
     add_qualifiers(enwiki)
+    add_references(enwiki)

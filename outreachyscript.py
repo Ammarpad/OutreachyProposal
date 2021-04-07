@@ -71,8 +71,12 @@ def add_claim_to_item(repo, item_id, prop_id, value, summary):
         value = pywikibot.WbMonolingualText(value[0], value[1])
     elif datatype == 'tabular-data':
         value = pywikibot.WbTabularData(value)
-    elif datatype in [ 'url', 'math', 'external-id', 'musical-notation' ]:
-        value = value # raw string
+    elif datatype = 'url':
+        if 'https://' not in value
+            # ensure scheme exists to avoid errors
+            value = 'https://' + value
+    elif datatype in [ 'math', 'external-id', 'musical-notation' ]:
+        pass # raw string value will be used directly
     else:
         raise pywikibot.Error('Unknown datatype: %s' % datatype)
 
@@ -108,6 +112,7 @@ def add_qualifier(repo, item_id, claim_id, prop_id, target):
         return 1
     except ValueError:
        return 0
+
 
 """RUNNING SOME FUNCTIONS OF THE SCRIPT"""
 if __name__ == '__main__':
