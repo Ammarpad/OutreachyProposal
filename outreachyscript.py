@@ -71,8 +71,8 @@ def add_claim_to_item(repo, item_id, prop_id, value, summary):
         value = pywikibot.WbMonolingualText(value[0], value[1])
     elif datatype == 'tabular-data':
         value = pywikibot.WbTabularData(value)
-    elif datatype = 'url':
-        if 'https://' not in value
+    elif datatype == 'url':
+        if 'https://' not in value:
             # ensure scheme exists to avoid errors
             value = 'https://' + value
     elif datatype in [ 'math', 'external-id', 'musical-notation' ]:
@@ -104,11 +104,35 @@ def add_qualifier(repo, item_id, claim_id, prop_id, target):
     if not claim:
         return 0
 
-    qualifier = pywikibot.Claim(repo, prop_id)
-    qualifier.setTarget(target)
+    try:
+        qualifier = pywikibot.Claim(repo, prop_id)
+        qualifier.setTarget(target)
+        claim.addQualifier(qualifier, summary=u'Adding a qualifier.')
+        return 1
+    except ValueError:
+       return 0
+
+def add_reference(repo, item_id, claim_id, rep_type, value):
+    """
+    This adds new qualifier to an existing claim
+    @param repo: DataSite
+    @param item_id: entity id where to do the work
+    @param prop_id: the propety id of the claim to add qualifier on
+    @param claim_id: the propety id of the claim (qualifier) to add
+    @param rep_type: the ref form (reference URL, stated in, etc)
+    @param value: value of the reference
+    """
+    item = pywikibot.ItemPage(repo, item_id)
+    claims = item.get()['claims']
+    claim = claims.get(claim_id)[0] or None
+
+    if not claim:
+        return 0
 
     try:
-        claim.addQualifier(qualifier, summary=u'Adding a qualifier.')
+        reference = pywikibot.Claim(repo, ref_type)
+        reference.setTarget(value)
+        claim.addSource(reference, summary=u'Adding reference.')
         return 1
     except ValueError:
        return 0

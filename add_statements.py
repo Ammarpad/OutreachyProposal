@@ -148,7 +148,29 @@ def add_qualifiers(enwiki):
     return 1
 
 def add_references(enwiki):
-    pass
+    """
+    Add references to an existing claim
+    """
+    repo = enwiki.data_repository()
+    ref_url = 'https://www.vanguardngr.com/2019/08/meet-dr-isa-ibrahim-pantami-minister-of-communications/'
+
+    data = [
+        # Add reference to claim 'P106' of entity Q42916213
+        ['Q42916213', 'P106', 'P854', ref_url]
+    ]
+
+    added = skipped = 0
+    for item_id, claim_id, prop_id, value in data:
+        res = outreachyscript.add_reference(repo, item_id, claim_id, prop_id, value)
+        if res:
+            added += 1
+        else:
+            skipped += 1
+
+    if added: print('Done. Added %s references' % added)
+    if skipped: print('%s references were skipped' % skipped)
+
+    return 1
 
 if __name__ == '__main__':
     enwiki = pywikibot.Site('en', 'wikipedia')
