@@ -8,7 +8,8 @@ import re
 import pywikibot
 import get_statements2
 import outreachyscript
-
+import imp
+imp.reload(outreachyscript)
 def main():
     enwiki = pywikibot.Site('en', 'wikipedia')
 
@@ -27,7 +28,7 @@ def add_statements(enwiki):
     """
     statements_found = []
     # Commonly used regex
-    netflix_id_regx = r'(https?:\/\\/www\.netflix\.com\/(title|watch))\/(\d{6,8})'
+    netflix_id_regx = r'(https?:\/\/www\.netflix\.com\/(title|watch))\/(\d{6,8})'
 
     # Data is list of lists that we want work on. Each list is in the format:
     # title - Title of the article to search
@@ -37,19 +38,17 @@ def add_statements(enwiki):
     data = [
         ['Jubilee_House', 'owners?', 'P127', 'infobox'], # QID
         ['Nigeria Prize for Literature', 'sponsors?', 'P859', 'infobox'], # QID
-        ['Citation (film)', '(length|runtime|running time)', 'P2047', 'infobox'], # duration
         ['Generation Revolution', netflix_id_regx, 'P1874', 'text'], # numeric id
         ['Ave Maryam', netflix_id_regx, 'P1874', 'text'], # numeric id
         ['Tatu (film)', netflix_id_regx, 'P1874', 'text'], # numeric id
         ['Fix Us', netflix_id_regx, 'P1874', 'text'], # numeric id
-        ['Back to the Outback', '(released?|release date)', 'P577', 'infobox'], # date
-        ['Ultimate Love (TV series)', '(released?|release date)', 'P577', 'infobox'], # date
-        ['Lismore (Parliament of Ireland constituency)', '(abolished|disestablished)', 'P2043', 'infobox'], # date
         ['Nigeria Prize for Literature', '(reward|prize money)', 'P2121', 'infobox'], # quantity
         ['Instituto Benjamin Constant', '(official)? website', 'P856', 'infobox'], # string (url)
         ['Ron Rocco', '(official)? website', 'P856', 'infobox'], # string (url)
-        ['Instituto Benjamin Constant', '(coordinates|coords)', 'P625', 'infobox'], # coordinates
         ['Thomas Witlam Atkinson', '\\[\\[File: (Alatau(.*))\\]\\]', 'P18', 'text'] # File
+        ['Back to the Outback', '(released?|release date)', 'P577', 'infobox'], # date
+        ['Ultimate Love (TV series)', '(released?|release date)', 'P577', 'infobox'], # date
+        ['Lismore (Parliament of Ireland constituency)', '(abolished|disestablished)', 'P2043', 'infobox'], # date
     ]
 
     # Loop over the data and query each article for the statement
@@ -63,7 +62,7 @@ def add_statements(enwiki):
     # Iterate over the statements and actually push them to the repo
     # Report back the number of statements added and/or skipped
     for result in statements_found:
-        if result['repo_value']:
+        if result and result['repo_value']:
             print('Repo already has the value for %s: %s' %(result['id'], result['repo_value']))
             exists += 1
             continue
@@ -108,17 +107,18 @@ def add_statement(page, value, p_id):
 
         return title
 
-    title = strip_wikilinks(value)
-    value_page = pywikibot.Page(enwiki, title)
+    if isinstance(value, str):
+        title =  strip_wikilinks(value)
+        value_page = pywikibot.Page(page.site, title)
+    else:
+       value_page = None
 
     # Follow redirect to get the relevant target
-    if value_page.isRedirectPage():
-        value_page = value_page.getRedirectTarget()
-
-    if value_page.exists():
-        value = value_page.data_item().title()
-    else:
-        value = title
+    if value_page:
+        if value_page.isRedirectPage():
+            value_page = value_page.getRedirectTarget()
+            if value_page.exists():
+                value = value_page.data_item().title()
 
     try:
         outreachyscript.add_claim_to_item(repo, page_item, p_id, value, summary=u"Adding claim")

@@ -5,6 +5,7 @@ import sys
 sys.path.append(os.environ['PYWIKIBOT_DIR'])
 
 import pywikibot
+from datetime import datetime
 
 def print_outreachy_page(site, title):
     """This loads and prints the text of a page"""
@@ -65,7 +66,15 @@ def add_claim_to_item(repo, item_id, prop_id, value, summary):
     elif datatype == 'quantity':
         value = pywikibot.WbQuantity(value, site=repo)
     elif datatype == 'time':
-        value = pywikibot.WbTime(value)
+        form = len(value.split())
+        if form == 3:
+            style = '%d %B %Y'
+        elif form == 2:
+            style = '%B %Y'
+        else:
+            style = '%Y'
+        dt = datetime.strptime(value, style).isoformat()
+        value = pywikibot.WbTime(dt)
     elif datatype == 'geo-shape':
         value = pywikibot.WbGeoShape(value)
     elif datatype == 'monolingualtext':
@@ -113,14 +122,14 @@ def add_qualifier(repo, item_id, claim_id, prop_id, target):
     except ValueError:
        return 0
 
-def add_reference(repo, item_id, claim_id, rep_type, value):
+def add_reference(repo, item_id, claim_id, ref_type, value):
     """
     This adds new qualifier to an existing claim
     @param repo: DataSite
     @param item_id: entity id where to do the work
     @param prop_id: the propety id of the claim to add qualifier on
     @param claim_id: the propety id of the claim (qualifier) to add
-    @param rep_type: the ref form (reference URL, stated in, etc)
+    @param ref_type: the ref form (reference URL, stated in, etc)
     @param value: value of the reference
     """
     item = pywikibot.ItemPage(repo, item_id)
