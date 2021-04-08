@@ -21,7 +21,7 @@ def import_soundcloud_ids():
     all_ids = []
     no_data_item = []
     
-    print('Beginning iterating through pages of "%s". There are %s pages.' %(category.title(),page_count))
+    print('Beginning iterating through pages of "%s". There are %s pages.' %(category.title(), page_count))
     
     for page in pages:
         try:
@@ -40,17 +40,16 @@ def import_soundcloud_ids():
         with open('no_data_item.txt', mode='w', encoding='utf-8') as file:
             for i in no_data_item:
                 file.write(i + '\n')
-        print('%s pages however don\'t have wikidat item. ' \
-            'Their titles can be found in ' % len(no_data_item, os.path.abspath('no_data_item.txt')))
+        print('%s pages however don\'t have wikidata item. ' \
+            'Their titles can be found in %s' % len(no_data_item, os.path.abspath('no_data_item.txt')))
     
     del no_data_item
-    return all_ids
 
     added = skipped = 0
     for s_id, page in all_ids:
         try:
             summary = u'Importing SoundClound id from English Wikipedia'
-            outreachyscript.add_claim_to_item(repo, page, 'P3040', s_id, summary=summary)
+            outreachyscript.add_claim_to_item(repo, page.data_item(), 'P3040', s_id, summary=summary)
             added += 1
         except pywikibot.Error as e:
             skipped += 1
