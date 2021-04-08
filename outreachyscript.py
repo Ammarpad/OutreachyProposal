@@ -51,7 +51,7 @@ def load_wikidata_item(site, item_id):
         print("There was a problem!")
         return 0
 
-def add_claim_to_item(repo, item_id, prop_id, value, summary):
+def add_claim_to_item(repo, item, prop_id, value, summary):
     """
     This adds new claim to an Item.
     """
@@ -93,8 +93,10 @@ def add_claim_to_item(repo, item_id, prop_id, value, summary):
     claim = pywikibot.Claim(repo, prop_id)
     claim.setTarget(value)
 
-    Item = pywikibot.ItemPage(repo, item_id)
-    Item.addClaim(claim, summary=summary)
+    if not isinstance(item, pywikibot.ItemPage):
+        item = pywikibot.ItemPage(repo, item)
+
+    item.addClaim(claim, summary=summary)
     print('New claim saved!')
     return 1
 

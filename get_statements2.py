@@ -144,7 +144,7 @@ def get_statement_from_text(wiki, title, regex, pid, ret=False):
         value['repo_value'] = repo_check
 
     if result:
-        val = result.group(result.lastindex)
+        val = result.group(len(result.groups()))
         if ret:
             value['id'] = pid
             value['title'] = title

@@ -8,8 +8,7 @@ import re
 import pywikibot
 import get_statements2
 import outreachyscript
-import imp
-imp.reload(outreachyscript)
+
 def main():
     enwiki = pywikibot.Site('en', 'wikipedia')
 
@@ -45,7 +44,7 @@ def add_statements(enwiki):
         ['Nigeria Prize for Literature', '(reward|prize money)', 'P2121', 'infobox'], # quantity
         ['Instituto Benjamin Constant', '(official)? website', 'P856', 'infobox'], # string (url)
         ['Ron Rocco', '(official)? website', 'P856', 'infobox'], # string (url)
-        ['Thomas Witlam Atkinson', '\\[\\[File: (Alatau(.*))\\]\\]', 'P18', 'text'] # File
+        ['Thomas Witlam Atkinson', '\\[\\[File: (Alatau(.*))\\]\\]', 'P18', 'text'], # File
         ['Back to the Outback', '(released?|release date)', 'P577', 'infobox'], # date
         ['Ultimate Love (TV series)', '(released?|release date)', 'P577', 'infobox'], # date
         ['Lismore (Parliament of Ireland constituency)', '(abolished|disestablished)', 'P2043', 'infobox'], # date
