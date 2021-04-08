@@ -59,11 +59,17 @@ def import_soundcloud_ids():
     return 1
 
 def get_soundcloud_id(wiki, title):
+    """
+    This parses and article and attempt get it's SoundCloud identifier ('P3040')
+    @param wiki: pywikibot.Site
+    @param title: string title of the article
+    @return: string id
+    """
     regex = r'(https?:\/\/(wwww\.)?soundcloud\.com\/(\w*))'
  
-    s_id = get_statements2.get_statement(wiki, title, regex, SOUNDCLOUD_ID_PROPERTY, source='text', ret=True)
+    result = get_statements2.get_statement(wiki, title, regex, SOUNDCLOUD_ID_PROPERTY, source='text', ret=True)
 
-    return s_id
+    return result['value']
 
 if __name__ == '__main__':
     import_soundcloud_ids()

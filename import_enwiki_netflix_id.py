@@ -61,9 +61,9 @@ def import_netflix_ids():
 def get_netflix_id(wiki, title):
     regex = r'(https?:\/\/www\.netflix\.com\/(title|watch))\/(\d{6,8})'
  
-    s_id = get_statements2.get_statement(wiki, title, regex, NETFLIX_ID_PROPERTY, source='text', ret=True)
+    result = get_statements2.get_statement(wiki, title, regex, NETFLIX_ID_PROPERTY, source='text', ret=True)
 
-    return s_id
+    return result['value']
 
 if __name__ == '__main__':
     import_netflix_ids()
