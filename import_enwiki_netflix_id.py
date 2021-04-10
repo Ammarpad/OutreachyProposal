@@ -37,7 +37,7 @@ def import_netflix_ids():
             result = get_netflix_id(wiki, title)
             # Skip if we couldn't extract the id
             # or if it already exists on the repo
-            if not result or result['repo_value']
+            if not result or result['repo_value']:
                 continue
             all_ids.append([result['value'], page])
         except pywikibot.NoPage:
