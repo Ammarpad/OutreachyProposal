@@ -30,7 +30,7 @@ def get_all_pages(wiki, cat_title):
 
     return result
 
-def add_claims_to_item(repo, items, prop_id, summary = ''):
+def add_claims_to_item(repo, items, prop_id, summary=''):
     """
     Push claims to the data repository, handle error
     and return a dictionary with the following keys:
@@ -64,11 +64,11 @@ def record_pages_without_items(titles, file_name):
     Does nothing if the titles list is empty
 
     @param titles: List of titles to record
-    @param file_name: Filename to write to
+    @param file_name: Name of file to write to
     """
     if len(titles):
         with open(file_name, mode='w', encoding='utf-8') as file:
-            for line in page_list:
-                file.write(line + '\n')
+            for t in titles:
+                file.write(t + '\n')
         print('%s pages however don\'t have wikidata item. ' \
             'Their titles can be found in %s' % (len(titles), os.path.abspath(file_name)))
