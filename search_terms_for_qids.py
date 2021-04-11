@@ -8,6 +8,12 @@ import pywikibot
 import re
 
 def search_terms_for_qids(lang):
+    """
+    Load page titles identified in Task 1 (User:Ammarpad/Outreachy 1)
+    and attempt to figure out their QIDs through entity search.
+
+    @param lang: string language code of the wiki
+    """
     wiki = pywikibot.Site(lang, 'wikipedia')
     wikidata = wiki.data_repository()
 
