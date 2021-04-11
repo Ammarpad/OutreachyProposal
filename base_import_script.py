@@ -32,8 +32,8 @@ def get_all_pages(wiki, cat_title):
 
 def add_claims_to_item(repo, items, prop_id, summary=''):
     """
-    Push claims to the data repository, handle error
-    and return a dictionary with the following keys:
+    Push claims to the data repository, add reference to each claim,
+    handle error and return a dictionary with the following keys:
 
     'added': The number of claims successfuly published
     'skipped': The number of claims which could not be saved
