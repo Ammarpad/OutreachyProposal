@@ -12,19 +12,19 @@ def get_all_pages(wiki, cat_title):
     Retrieve all pages from a given category and
     return a dictionary with the following keys:
 
-    'pages': A set of pywikibot.Page objects
+    'pages': A list of pywikibot.Page objects
     'count': The total number of pages found
     'title': Title of the category for display
 
     @param wiki: Pywikibot.Site
     @param cat_title: Plain name of the category
     without the namespace prefix.
-    @return dict
+    @return dictionary with the keys mentioned above
     """
     category = pywikibot.Category(wiki, cat_title)
     count = category.categoryinfo['pages']
     title = category.title()
-    pages = set(category.articles())
+    pages = [*category.articles()]
 
     result = {'pages': pages, 'count': count, 'title': title}
 
@@ -40,20 +40,22 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
     due to duplication or other error (if any)
 
     @param repo: DataSite object
-    @param items: List of the claims to add
+    @param items: List of [id, page]; add id to the data item of page
     @param prop_id: The property ID
     @param summary: Optional edit summary to use
-    @return dict
+    @return dictionary with the keys mentioned above
     """
     added = skipped = 0
 
     for i, page in items:
+        p_item = page.data_item()
+
         try:
-            outreachyscript.add_claim_to_item(repo, page.data_item(), prop_id, i, summary=summary)
+            outreachyscript.add_claim_to_item(repo, p_item, prop_id, i, summary)
             added += 1
         except pywikibot.Error as e:
             skipped += 1
-            print('Error adding the claim: %s' % str(e) )  
+            print('Error: Adding claim to %s failed: %s' % (p_item.title(), str(e)))
 
     return {'added': added, 'skipped': skipped}
 

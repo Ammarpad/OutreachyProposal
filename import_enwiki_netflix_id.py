@@ -34,12 +34,12 @@ def import_netflix_ids():
     for page in pages:
         title = page.title()
         try:
-            result = get_netflix_id(wiki, title)
+            res = get_netflix_id(wiki, title)
             # Skip if we couldn't extract the id
             # or if it already exists on the repo
-            if not result or result['repo_value']:
+            if not res or res['repo_value']:
                 continue
-            all_ids.append([result['value'], page])
+            all_ids.append([res['value'], page])
         except pywikibot.NoPage:
            print('Note: %s has no entity page' % title)
            no_data_item.append(title)
@@ -64,11 +64,11 @@ def import_netflix_ids():
 
 def get_netflix_id(wiki, title):
     """
-    This parses and article and attempt to get its Netflix identifier ('P1874')
+    This parses an article and attempt to get its Netflix identifier ('P1874')
 
     @param wiki: pywikibot.Site
     @param title: string title of the article
-    @return: dictionary
+    @return: dictionary or None
     """
     regex = r'(https?:\/\/www\.netflix\.com\/(title|watch))\/(\d{6,8})'
  

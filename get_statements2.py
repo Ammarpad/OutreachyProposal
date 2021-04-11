@@ -16,7 +16,7 @@ def get_statement(wiki, title, key, pid, source=None, ret=False):
     @param key: The key to search for (a simple string or subregex)
     @param pid: The property id
     @param source: likely location to find the fact (e.g: infobox or just entire text)
-    @param ret: Return the result instead of printing
+    @param ret: Return the result instead of printing to stdout
     """
     if source == 'infobox':
         result = get_statement_from_infobox(wiki, title, key, pid, ret)

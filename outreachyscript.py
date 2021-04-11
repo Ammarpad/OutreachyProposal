@@ -53,7 +53,15 @@ def load_wikidata_item(site, item_id):
 
 def add_claim_to_item(repo, item, prop_id, value, summary):
     """
-    This adds new claim to an Item.
+    This adds new claim to an Item and handles datatype conversion
+    based on the property where we are to add the claim.
+
+    @param repo DataSite
+    @param item entity id where to do the work or pywikibot.ItemPage object
+    @param prop_id the propety id of the claim
+    @param value The claim to add
+    @param summary Edit summary
+    @raises pywikibot.Error on unknown datatype
     """
     datatype = pywikibot.PropertyPage(repo, prop_id).type
     if datatype == 'wikibase-item':
