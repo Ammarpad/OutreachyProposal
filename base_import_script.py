@@ -47,15 +47,24 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
     """
     added = skipped = 0
 
+    # For adding reference
+    enwiki_page = pywikibot.Page(wiki, 'English Wikipedia')
+    enwiki_data_item = enwiki_page.data_item()
+    ref_id = 'P143' # imported from Wikimedia project
+
     for i, page in items:
-        p_item = page.data_item()
+        page_item = page.data_item()
+        qid = page_item.title()
 
         try:
-            outreachyscript.add_claim_to_item(repo, p_item, prop_id, i, summary)
+            # Add the claim
+            outreachyscript.add_claim_to_item(repo, page_item, prop_id, i, summary)
+            # Also add a reference
+            outreachyscript.add_reference(repo, qid, prop_id, ref_id, enwiki_data_item)
             added += 1
-        except pywikibot.Error as e:
+        except (pywikibot.Error, pywikibot.data.api.APIError) as e:
             skipped += 1
-            print('Error: Adding claim to %s failed: %s' % (p_item.title(), str(e)))
+            print('Error: Adding claim to %s failed: %s' % (qid, str(e)))
 
     return {'added': added, 'skipped': skipped}
 
