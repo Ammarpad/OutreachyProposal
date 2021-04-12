@@ -28,7 +28,7 @@ def main():
         # Run for UnconnectedPages
         find_qids_for_pages()
     except KeyboardInterrupt:
-        print('Quited!')
+       pass
 
 def find_qids_for_pages():
     """
