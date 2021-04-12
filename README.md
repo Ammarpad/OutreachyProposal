@@ -1,6 +1,8 @@
 # OutreachyProject
 A collection of python modules to work with wikibase structured data and Wikipedia articles. The modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot).
 
+They are not much cohesive now and some parts are heavily personalized to my local environment or uses hardcoding where not necessary, as this is both work in progress and proof-of-concept. The aim is to eventually coalesnce them into a robust, reusable script to help in [Synchronising the data between Wikidata and Wikipedias](https://phabricator.wikimedia.org/T276329).
+
 1. outreachyscript.py:
    - This is the initial module created. It has functions to play with the DataSite, (print content of a page, load wikibase Item, append text to a page e.t.c). It also has functions to actually edit the content pages, add a claim to an
    Item, – with datatype handling – add a reference as well as qualifiers.
@@ -11,11 +13,11 @@ A collection of python modules to work with wikibase structured data and Wikiped
  nesting logic, templates and links. It also has a function to check the DataSite and determine whether an Item already has a particular claim.
 3. add_statements.py
    - This module has functions to walk through list of pages and associated regex hint to search through their source texts, extract a statement and add it to the Item of the page in the DataSite. Also works for qualifiers and references.
-5. base\_import\_script.py
-  - Module with functions to retrieve all pages from a Wikipedia category and also to add multiple claims to multiple Item on the DataSite. This module provides base functions needed by both `import_enwiki_netflix_id.py` and `import_enwiki_soundcloud_id.py`
+5. base\_import\_script.py:
+   - Module with functions to retrieve all pages from a Wikipedia category and also to add multiple claims to multiple Item on the DataSite. This module provides base functions needed by both `import_enwiki_netflix_id.py` and `import_enwiki_soundcloud_id.py`
 6. search\_terms\_for\_qids.py
-  - This module has two functions to search for Item IDs of Wikipedia pages on the repo site. A function that takes list of pages that already have Item page and a function that queries list of unconnected pages and attempt to figure the right ID for them through entity search API.
+   - This module has two functions to search for Item IDs of Wikipedia pages on the repo site. A function that takes list of pages that already have Item page and a function that queries list of unconnected pages and attempt to figure the right ID for them through entity search API.
 7. import\_enwiki\_netflix\_id.py
-  - This module work is to loop a list of  English Wikipedia pages, extract their Netflix identifiers (`P1874`) through grepping the source text and add the found IDs to the respective data items of the pages.
+   - This module work is to loop through a list of  English Wikipedia pages, extract their Netflix identifiers (`P1874`) through grepping the source text and add the found IDs to the respective data items of the pages.
 8. import\_enwiki\_soundcloud\_id.py
-  - This module work is similar to that for `import_enwiki_netflix_id.py`. It loops through a list of  English Wikipedia pages, extract their SoundCloud identifiers (`P3040`) through grepping the source text and add the found IDs to the respective data items of the pages.
+   - This module work is similar to that for `import_enwiki_netflix_id.py`. It loops through a list of  English Wikipedia pages, extract their SoundCloud identifiers (`P3040`) through grepping the source text and add the found IDs to the respective data items of the pages.
