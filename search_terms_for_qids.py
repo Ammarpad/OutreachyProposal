@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+
+"""
 
 import os
 import sys
@@ -6,6 +9,47 @@ sys.path.append(os.environ['PYWIKIBOT_DIR'])
 
 import pywikibot
 import re
+
+def main():
+    try:
+        # Run for French, Arabic and English pages
+        search_terms_for_qids('fr')
+        search_terms_for_qids('ar')
+        search_terms_for_qids('en')
+        # Run for UnconnectedPages
+        find_qids_for_pages()
+    except KeyboardInterrupt:
+        print('Quited!')
+
+def find_qids_for_pages():
+    wiki = pywikibot.Site('en', 'wikipedia')
+    wikidata = wiki.data_repository()
+    unconnected_pages = wiki.querypage('UnconnectedPages', total=1000)
+
+    def get_mainspace_pages(pages):
+        res = []
+        for i in pages:
+            if i.namespace().id == 0:
+                res.append(i)
+        return res
+
+    pages = get_mainspace_pages([*unconnected_pages])
+    print('Found %s total pages in main namespace' % len(pages))
+
+    found = 0
+    for p in pages:
+        res = [*wikidata.search_entities(p.title(), 'en', None, **{'type': 'item'})]
+        print('Found %s matching results.' % len(res))
+
+        if len(res) == 1:
+            print('Found the page\'s QID: {title} -> {qid}.'.format(title=p.title(), qid=res[0]['id']))
+            found += 1
+            continue
+        elif len(res) == 0:
+            print('Couldn\'t find the QID for %s, Search API returns empty result.' % p.title())
+            continue
+
+    print('Found %s total QIDs' % len(found))
 
 def search_terms_for_qids(lang):
     """
@@ -18,7 +62,7 @@ def search_terms_for_qids(lang):
     wikidata = wiki.data_repository()
 
     # Pages from work in Task 1
-    page = pywikibot.Page(wikidata, u'User:Ammarpad/Outreachy 1')
+    page = pywikibot.Page(wikidata, 'User:Ammarpad/Outreachy 1')
 
     # Find all page titles linking back to Wikipedia in 'lang'
     titles = re.findall(r'\[\[:%s:(.*?)\]\]' % lang, page.text)
@@ -40,9 +84,10 @@ def search_terms_for_qids(lang):
 
         if len(res) == 1:
             print('Found the page\'s QID: {title} -> {qid}.'.format(title=t, qid=res[0]['id']))
+            found += 1
             continue
         elif len(res) == 0:
-            print('Couldn\'t find the QID for %s, Search API returns empty result' % t)
+            print('Couldn\'t find the QID for %s, Search API returns empty result.' % t)
             continue
 
         for i in res:
@@ -53,7 +98,7 @@ def search_terms_for_qids(lang):
                 qid = page.data_item().title()
 
             except pywikibot.NoPage:
-                print('Couldn\'t find the QID for %s, page doesn\'t exists' % t)
+                print('Couldn\'t find the QID for %s, page doesn\'t exist' % t)
                 continue
 
             if i['id'] == qid:
@@ -61,12 +106,7 @@ def search_terms_for_qids(lang):
                 found += 1
                 break
 
-            print('Couldn\'t find the QID for %s' % t)
-
     print('Finished! Found %s QIDs in total' % found)
 
 if __name__ == '__main__':
-    # Run for French, Arabic and English pages
-    search_terms_for_qids('fr')
-    search_terms_for_qids('ar')
-    search_terms_for_qids('en')
+    main()
