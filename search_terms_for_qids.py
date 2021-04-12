@@ -48,15 +48,18 @@ def find_qids_for_pages():
     found = 0
     for p in pages:
         res = [*wikidata.search_entities(p.title(), 'en', None, **{'type': 'item'})]
-        print('Found %s matching results.' % len(res))
+        if len(res) > 0: print('Found %s matching results.' % len(res))
 
-        if len(res) == 1:
+        if len(res) == 0:
+            print('Couldn\'t find the QID for %s, Search API returns empty result.' % p.title())
+            continue
+        elif len(res) == 1:
             print('Found the page\'s QID: {title} -> {qid}.'.format(title=p.title(), qid=res[0]['id']))
             found += 1
             continue
-        elif len(res) == 0:
-            print('Couldn\'t find the QID for %s, Search API returns empty result.' % p.title())
-            continue
+        else:
+            # Hanlde multiple results
+            pass
 
     print('Found %s total QIDs' % len(found))
 
@@ -89,7 +92,7 @@ def search_terms_for_qids(lang):
             print('Searching for %s...' % t)
 
         res = [*wikidata.search_entities(t, lang, None, **{'type': 'item'})]
-        print('Found %s matching results.' % len(res))
+        if len(res) > 0: print('Found %s matching results.' % len(res))
 
         if len(res) == 1:
             print('Found the page\'s QID: {title} -> {qid}.'.format(title=t, qid=res[0]['id']))
