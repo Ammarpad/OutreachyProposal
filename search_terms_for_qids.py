@@ -35,18 +35,14 @@ def find_qids_for_pages():
     Loop through English Wikipedia unconnected pages and attempt to
     find their QIDs in the repo.
     """
-    wiki = pywikibot.Site('en', 'wikipedia')
-    wikidata = wiki.data_repository()
-    unconnected_pages = wiki.querypage('UnconnectedPages', total=1000)
+    enwiki = pywikibot.Site('en', 'wikipedia')
+    wikidata = enwiki.data_repository()
+    unconnected_pages = enwiki.querypage('UnconnectedPages', total=1000)
 
-    def get_mainspace_pages(pages):
-        res = []
-        for i in pages:
-            if i.namespace().id == 0:
-                res.append(i)
-        return res
+    # Filter pages not in main namespace
+    mainspace_pages = filter(lambda page: (page.namespace().id == 0), [*unconnected_pages])
+    pages = [*mainspace_pages]
 
-    pages = get_mainspace_pages([*unconnected_pages])
     print('Found %s total pages in main namespace' % len(pages))
 
     found = 0
