@@ -1,7 +1,7 @@
 # OutreachyProject
 A collection of python modules to work with wikibase structured data and Wikipedia articles. The modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot).
 
-They are not much cohesive now and some parts are heavily personalized to my local environment or uses hardcoding where not necessary, as this is both work in progress and proof-of-concept. The aim is to eventually coalesnce them into a robust, reusable script to help in [Synchronising data between Wikidata and Wikipedias](https://phabricator.wikimedia.org/T276329).
+They are not much cohesive now and some parts are heavily personalized to my local environment or use hardcoding where not necessary, as this is both work-in-progress and proof-of-concept. The project aim is to eventually coalesce them into a robust, reusable and extensible script or set of scripts to help in continuous [synchronization of data between Wikidata and Wikipedias](https://phabricator.wikimedia.org/T276329).
 
 1. outreachyscript.py:
    - This is the initial module created. It has functions to play with our DataSite/Wikidata, (print content of a page, load wikibase Item, append text to a page e.t.c). It also has functions to actually edit the content pages, add a claim to an
