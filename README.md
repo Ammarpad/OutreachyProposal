@@ -21,5 +21,5 @@ They are not much cohesive now and some parts are heavily personalized to my loc
    - This module work is to loop through a list of  English Wikipedia pages, extract their Netflix identifiers (`P1874`) through grepping the source text and add the found IDs to the respective data items of the pages.
 8. **import\_enwiki\_soundcloud\_id.py:**
    - This module work is similar to that for `import_enwiki_netflix_id.py`. It loops through a list of  English Wikipedia pages, extract their SoundCloud identifiers (`P3040`) through grepping the source text and add the found IDs to the respective data items of the pages.
-9. **fix\_netflix\_id_mismatch.py**
-  - This module has functions to detect and attempt to resolve the Netflix ID disparity between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata)
+9. **fix\_netflix\_id_mismatch.py:**
+   - This module has functions to detect and attempt to resolve the Netflix ID disparity between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata).

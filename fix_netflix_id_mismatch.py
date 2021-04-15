@@ -54,13 +54,13 @@ def check_netflix_ids_mismatch():
             # Since the names are the same, then definitely both IDs are valid for the
             # title and visiting the base URL with either of the IDS will confirm this.
             print('''The movie {t} has two different Netflix IDs and are both correct.
-                repoId: {repoId}, articleId: {wikiId}. This can be confirmed by
-                visiting {url}{repoId} and {url}{wikiId} which will all resolved to
-                the same page'''.format(t=title, repoId=ids['repoId'], wikiId=ids['articleId'], url=NETFLIX_BASE_URL))
+                repoId: {rId}, articleId: {wId}. This can be confirmed by
+                visiting {url}{rId} and {url}{wId} which will all resolved to
+                the same page'''.format(t=title, rId=ids['repoId'], wId=ids['articleId'], url=NETFLIX_BASE_URL))
             processed += 1
         else:
             # At this stage, the IDs are still different and do not belong to the same title
-            wiki_name = title.split('(', 1)[0].strip() # strip wiki disambiguation markers
+            wiki_name = title.partition('(')[0].strip() # strip wiki disambiguation markers
             if web_name1 == wiki_name:
                 print('The Wikidata netflix ID: %s is the correct one for the title %s:' %(ids['repoId'], title))
             elif web_name2 == wiki_name:
