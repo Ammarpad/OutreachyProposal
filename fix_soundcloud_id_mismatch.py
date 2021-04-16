@@ -59,8 +59,10 @@ def check_soundcloud_ids_mismatch():
             print('''Both SoundClouds IDs are valid for the title. %s''' % title)
             processed += 1
         elif response_code1 == 404 and response_code1 != response_code2:
-            pass
+            processed += 1
         elif response_code2 == 404 and response_code2 != response_code1:
+            processed += 1
+        else:
             pass
 
     print('Finished! Total pages: %s. Processed: %s' %(total_pages, processed))
@@ -82,7 +84,7 @@ def check_soundcloud_id(id):
     
     code = None
     if page:
-        html = BeautifulSoup(page, 'html.parse')
+        html = BeautifulSoup(page, 'html.parser')
         data = html.find('link', {'rel': 'canonical'})
         c_url = data['href']
         code = 200 # successful request
