@@ -1,5 +1,5 @@
 # OutreachyProject
-A collection of python modules to work with wikibase structured data and Wikipedia articles. All the modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot), additionally, `fix_netflix_id_mismatch.py` requires [BeautifulSoup library](https://pypi.org/project/beautifulsoup4/).
+A collection of python modules to work with wikibase structured data and Wikipedia articles. All the modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot), additionally, `fix_netflix_id_mismatch.py` requires [BeautifulSoup library](https://pypi.org/project/beautifulsoup4/) while `fix_soundcloud_id_mismatch.py` requires both  BeautifulSoup and [Soundcloud-lib](https://pypi.org/project/soundcloud-lib/).
 
 They are not much cohesive now and some parts are heavily personalized to my local environment or use hardcoding where not necessary, as this is both work-in-progress and proof-of-concept. The main project aim is to eventually coalesce and refactor them into a robust, reusable and extensible script or set of scripts to help in continuous [synchronization of data between Wikidata and Wikipedias](https://phabricator.wikimedia.org/T276329).
 
@@ -22,4 +22,6 @@ They are not much cohesive now and some parts are heavily personalized to my loc
 8. **import\_enwiki\_soundcloud\_id.py:**
    - This module work is similar to that for `import_enwiki_netflix_id.py`. It loops through a list of  English Wikipedia pages, extract their SoundCloud identifiers (`P3040`) through grepping the source text and add the found IDs to the respective data items of the pages.
 9. **fix\_netflix\_id_mismatch.py:**
-   - This module has functions to detect and attempt to resolve the Netflix ID disparity between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata).
+   - This module has functions to detect and attempt to resolve the Netflix ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata).
+10. **fix\_soundcloud\_id_mismatch.py:**
+   -  Module  to detect and attempt to resolve the SondCloud ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:SoundCloud_ID_different_from_Wikidata)
