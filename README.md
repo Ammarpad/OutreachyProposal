@@ -24,4 +24,4 @@ They are not much cohesive now and some parts are heavily personalized to my loc
 9. **fix\_netflix\_id_mismatch.py:**
    - This module has functions to detect and attempt to resolve the Netflix ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata).
 10. **fix\_soundcloud\_id_mismatch.py:**
-   -  Module  to detect and attempt to resolve the SondCloud ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:SoundCloud_ID_different_from_Wikidata)
+    - Module  to detect and attempt to resolve the SondCloud ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:SoundCloud_ID_different_from_Wikidata)

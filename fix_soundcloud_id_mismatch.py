@@ -4,8 +4,6 @@ import os
 import sys
 sys.path.append(os.environ['PYWIKIBOT_DIR'])
 
-import json
-import requests
 import pywikibot
 import import_enwiki_soundcloud_id
 
@@ -62,7 +60,8 @@ def check_soundcloud_ids_mismatch():
             processed += 1
         elif response_code2 == 404 and response_code2 != response_code1:
             processed += 1
-        else:
+        elif response_code1 == 404 and response_code2 == 404:
+            processed += 1
             pass
 
     print('Finished! Total pages: %s. Processed: %s' %(total_pages, processed))
