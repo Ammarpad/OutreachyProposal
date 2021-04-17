@@ -49,15 +49,15 @@ def check_netflix_ids_mismatch():
         # Let us check their associated movie titles in the website
         repoId = ids['repoId']
         wikiId = ids['articleId']
-        web_name1, response_code1 = get_netflix_moviename(repoId)
-        web_name2, response_code2 = get_netflix_moviename(wikiId)
+        web_name1 = get_netflix_moviename(repoId)
+        web_name2 = get_netflix_moviename(wikiId)
 
         if web_name1 == web_name2:
             # Since the names are the same, then definitely both IDs are valid for the
             # title and visiting the URL with either of the IDs will confirm this.
-            print('''The movie {t} has two different Netflix IDs and both are correct.
+            print('''The movie "{t}" has two different Netflix IDs and both are correct.
                 repoId: {rId}, articleId: {wId}. This can be confirmed by
-                visiting {url}{rId} and {url}{wId} which will all resolved to
+                visiting {url}{rId} and {url}{wId} which will all resolve to
                 the same page'''.format(t=title, rId=repoId, wId=wikiId, url=NETFLIX_BASE_URL))
             processed += 1
         else:
@@ -72,21 +72,17 @@ def check_netflix_ids_mismatch():
             else:
                 if not web_name1 and web_name2:
                     print('Found the correct ID for %s. ID => %s' %(title, wikiId))
+                    print('Fixing it now...')
                     processed += 1
                 elif not web_name2 and web_name1:
                     print('Found the correct ID for %s. ID => %s' %(title, repoId))
-
+                    print('Fixing it now...')
                     processed += 1
                 else:
-                    # This means both ID searches return empty string (non 200 response code)
-                    # But let's confirm, and act only if the response is 404 (not found).
-                    if response_code2 == 404 and response_code1 != 404:
-                        processed += 1
-                    elif response_code1 == 404 and response_code2 != 404:
-                        processed += 1
-                    else:
-                        print('Both %s and %s are invalid IDs' %(repoId, wikiId))
-                        processed += 1
+                    print('''Cannot resolve the ids (%s and %s) to an article. Both for the wiki title: %s.
+                        Netflix Web titles are ['%s', '%s']
+                        ''' %(repoId, wikiId, title, web_name1, web_name2))
+                    processed += 1
 
     print('Finished! Total pages: %s. Processed: %s' %(total_pages, processed))
 
@@ -99,7 +95,7 @@ def get_netflix_moviename(id):
     https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata
 
     @param id: Netflix Id
-    @return List[] string the movie name or empty string, and the response code
+    @return string the movie name or empty string
     """
     web_request = requests.get('https://www.netflix.com/title/' + str(id))
     html = BeautifulSoup(web_request.content, 'html.parser')
@@ -111,7 +107,7 @@ def get_netflix_moviename(id):
         data = json.loads(data.string)
         name = data['name']
 
-    return name, web_request.status_code
+    return name
 
 def compare_netflix_ids(page, wiki):
     """
@@ -125,7 +121,6 @@ def compare_netflix_ids(page, wiki):
     @return True if the IDs are equal, dict() if they are not;
         or None if we cannot extract the ID
     """
-
     result = import_enwiki_netflix_id.get_netflix_id(wiki, page.title())
 
     if result:

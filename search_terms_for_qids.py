@@ -36,7 +36,7 @@ def find_qids_for_pages():
     find their QIDs in the repo.
     """
     enwiki = pywikibot.Site('en', 'wikipedia')
-    wikidata = enwiki.data_repository()
+    data_repo = enwiki.data_repository()
     unconnected_pages = enwiki.querypage('UnconnectedPages', total=1000)
 
     # Filter pages not in main namespace
@@ -47,7 +47,7 @@ def find_qids_for_pages():
 
     found = 0
     for p in pages:
-        res = [*wikidata.search_entities(p.title(), 'en', None, **{'type': 'item'})]
+        res = [*data_repo.search_entities(p.title(), 'en', None, **{'type': 'item'})]
         if len(res) > 0: print('Found %s matching results.' % len(res))
 
         if len(res) == 0:
@@ -58,8 +58,11 @@ def find_qids_for_pages():
             found += 1
             continue
         else:
-            # Hanlde multiple results
-            pass
+            for r in res:
+                if r['label'] == p.title():
+                    print('Found the page\'s QID: {title} -> {qid}.'.format(title=p.title(), qid=r['id']))
+                    found += 1
+                    break
 
     print('Found %s total QIDs' % len(found))
 

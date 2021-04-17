@@ -52,7 +52,7 @@ def check_soundcloud_ids_mismatch():
         c_url, response_code1 = check_soundcloud_id(repoId)
         c_url2, response_code2 = check_soundcloud_id(wikiId)
 
-        if c_url != '' and c_url == c_url2:
+        if c_url == c_url2:
             # Both valid
             print('''Both SoundClouds IDs are valid for the title. %s''' % title)
             processed += 1

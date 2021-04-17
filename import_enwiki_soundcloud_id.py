@@ -47,6 +47,10 @@ def import_soundcloud_ids():
         except ReadTimeout:
             print('Caught ReadTimeout exception; retrying after 5 seconds...')
             sleep(5)
+
+        if len(all_ids) == 20: # Do this in batches of 20
+            print('Found 20 IDs to use for first batch run.')
+            break
         
     print('Found %s potential SoundClound ids to add' % len(all_ids))
     
