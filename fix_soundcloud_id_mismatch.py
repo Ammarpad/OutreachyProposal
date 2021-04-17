@@ -57,11 +57,13 @@ def check_soundcloud_ids_mismatch():
             print('''Both SoundClouds IDs are valid for the title. %s''' % title)
             processed += 1
         elif response_code1 == 404 and response_code1 != response_code2:
+            # Handle case
             processed += 1
         elif response_code2 == 404 and response_code2 != response_code1:
+            # Handle case
             processed += 1
-        elif response_code1 == 404 and response_code2 == 404:
-            processed += 1
+        else:
+            # Handle final case
             pass
 
     print('Finished! Total pages: %s. Processed: %s' %(total_pages, processed))

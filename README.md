@@ -1,5 +1,5 @@
 # OutreachyProject
-A collection of python modules to work with wikibase structured data and Wikipedia articles. All the modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot), additionally, `fix_netflix_id_mismatch.py` requires [BeautifulSoup library](https://pypi.org/project/beautifulsoup4/) while `fix_soundcloud_id_mismatch.py` requires both  BeautifulSoup and [Soundcloud-lib](https://pypi.org/project/soundcloud-lib/).
+A collection of python modules to work with Wikidata structured data and Wikipedia articles. All the modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot). Additionally, `fix_netflix_id_mismatch.py` requires [BeautifulSoup library](https://pypi.org/project/beautifulsoup4/) while `fix_soundcloud_id_mismatch.py` requires both  BeautifulSoup and [Soundcloud-lib](https://pypi.org/project/soundcloud-lib/).
 
 They are not much cohesive now and some parts are heavily personalized to my local environment or use hardcoding where not necessary, as this is both work-in-progress and proof-of-concept. The main project aim is to eventually coalesce and refactor them into a robust, reusable and extensible script or set of scripts to help in continuous [synchronization of data between Wikidata and Wikipedias](https://phabricator.wikimedia.org/T276329).
 
