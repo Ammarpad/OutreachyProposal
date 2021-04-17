@@ -11,6 +11,7 @@ import import_enwiki_netflix_id
 
 from bs4 import BeautifulSoup
 from pywikibot import pagegenerators
+from import_enwiki_netflix_id import NETFLIX_ID_PROPERTY
 
 CATEGORY = 'Category:Netflix_title_ID_different_from_Wikidata'
 NETFLIX_BASE_URL = 'https://www.netflix.com/title/'
@@ -42,9 +43,11 @@ def check_netflix_ids_mismatch():
             processed += 1
             continue
 
-        result.append([res, page.title()])
+        result.append([res, page])
 
-    for ids, title in result:
+    for ids, page in result:
+        title = page.title()
+
         # Now we have two IDs (one from article, another from repo).
         # Let us check their associated movie titles in the website
         repoId = ids['repoId']
@@ -71,16 +74,23 @@ def check_netflix_ids_mismatch():
                 processed += 1
             else:
                 if not web_name1 and web_name2:
+                    # The repo has the incorrect id, so we will fix it now
                     print('Found the correct ID for %s. ID => %s' %(title, wikiId))
                     print('Fixing it now...')
+                    item = page.data_item()
+                    item_dict = item.get()
+                    for claim in item_dict['claims'][NETFLIX_ID_PROPERTY]:
+                        print('Changing %s -> %s...' %(claim.getTarget(), wikiId))
+                        claim.changeTarget(wikiId)
                     processed += 1
                 elif not web_name2 and web_name1:
-                    print('Found the correct ID for %s. ID => %s' %(title, repoId))
-                    print('Fixing it now...')
+                    # This script will not edit English now, it's the one with incorrect id
+                    print('Found the correct ID for %s (already in the repo). ID => %s' %(title, repoId))
+                    print('The article in the Wikipedia article needs to be corrected now')
                     processed += 1
                 else:
-                    print('''Cannot resolve the ids (%s and %s) to an article. Both for the wiki title: %s.
-                        Netflix Web titles are ['%s', '%s']
+                    print('''Cannot resolve the ids (%s and %s) to an article. Both for the wiki title: '%s'.
+                        Netflix Web titles are ['%s' and '%s']
                         ''' %(repoId, wikiId, title, web_name1, web_name2))
                     processed += 1
 
