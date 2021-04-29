@@ -90,7 +90,7 @@ def add_claim_to_item(repo, item, prop_id, value, summary):
     elif datatype == 'tabular-data':
         value = pywikibot.WbTabularData(value)
     elif datatype == 'url':
-        if 'https://' not in value:
+        if 'https://' not in value and 'http://' not in value:
             # ensure scheme exists to avoid errors
             value = 'https://' + value
     elif datatype in [ 'math', 'external-id', 'musical-notation' ]:

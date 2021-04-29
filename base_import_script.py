@@ -47,7 +47,7 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
     """
     added = skipped = 0
 
-    # For adding reference
+    # For adding references
     wiki = pywikibot.Site('en', 'wikipedia')
     enwiki_page = pywikibot.Page(wiki, 'English Wikipedia')
     enwiki_data_item = enwiki_page.data_item()
