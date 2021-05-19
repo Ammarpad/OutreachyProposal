@@ -1,5 +1,5 @@
 # OutreachyProject
-This is part of a proposal for [Outreachy Internship 2021](https://www.outreachy.org/).
+This is part of a (now successful) proposal for [Outreachy Internship 2021](https://www.outreachy.org/).
 
 This repo is a collection of python modules to work with Wikidata structured data and Wikipedia articles. All the modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot). Additionally, `fix_netflix_id_mismatch.py` requires [BeautifulSoup library](https://pypi.org/project/beautifulsoup4/) while `fix_soundcloud_id_mismatch.py` requires both  BeautifulSoup and [Soundcloud-lib](https://pypi.org/project/soundcloud-lib/).
 
