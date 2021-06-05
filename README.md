@@ -1,4 +1,4 @@
-# OutreachyProject
+# OutreachyProposal
 This is part of a (now successful) proposal for [Outreachy Internship 2021](https://www.outreachy.org/).
 
 This repo is a collection of python modules to work with Wikidata structured data and Wikipedia articles. All the modules require Python 3.7.x and [Pywikibot package](https://github.com/wikimedia/pywikibot). Additionally, `fix_netflix_id_mismatch.py` requires [BeautifulSoup library](https://pypi.org/project/beautifulsoup4/) while `fix_soundcloud_id_mismatch.py` requires both  BeautifulSoup and [Soundcloud-lib](https://pypi.org/project/soundcloud-lib/).
@@ -27,3 +27,6 @@ They are not much cohesive or ready for external use now and some parts are heav
    - This module has functions to detect and attempt to resolve the Netflix ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:Netflix_title_ID_different_from_Wikidata).
 10. **fix\_soundcloud\_id_mismatch.py:**
     - Module  to detect and attempt to resolve the SondCloud ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:SoundCloud_ID_different_from_Wikidata)
+
+
+* See [OutreachyProject](https://github.com/Ammarpad/OutreachyPrject) for the actual implementation.
