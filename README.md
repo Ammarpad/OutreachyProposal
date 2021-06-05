@@ -29,4 +29,4 @@ They are not much cohesive or ready for external use now and some parts are heav
     - Module  to detect and attempt to resolve the SondCloud ID discrepancy between Wikipedia and Wikidata as recorded in [this Wikipedia maintenance category](https://en.wikipedia.org/wiki/Category:SoundCloud_ID_different_from_Wikidata)
 
 
-* See [OutreachyProject](https://github.com/Ammarpad/OutreachyPrject) for the actual implementation.
+* See [OutreachyProject](https://github.com/Ammarpad/OutreachyProject) for the actual implementation.
