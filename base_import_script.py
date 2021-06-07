@@ -38,6 +38,7 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
     'added': The number of claims successfuly published
     'skipped': The number of claims which could not be saved
     due to duplication or other error (if any)
+    'iteml': The items of the pages edited
 
     @param repo: DataSite object
     @param items: List of [id, page]; add id to the data item of page
@@ -46,6 +47,7 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
     @return dictionary with the keys mentioned above
     """
     added = skipped = 0
+    itemlist = list()
 
     # For adding references
     wiki = pywikibot.Site('en', 'wikipedia')
@@ -67,11 +69,12 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
             # Also add a reference
             outreachyscript.add_reference(repo, qid, prop_id, ref_id, enwiki_data_item)
             added += 1
+            itemlist.append(qid)
         except (pywikibot.Error, pywikibot.data.api.APIError) as e:
             skipped += 1
             print('Error: Adding claim to %s failed: %s' % (qid, str(e)))
 
-    return {'added': added, 'skipped': skipped}
+    return {'added': added, 'skipped': skipped, 'items': itemlist}
 
 
 def record_pages_without_items(titles, file_name):
