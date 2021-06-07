@@ -54,7 +54,11 @@ def add_claims_to_item(repo, items, prop_id, summary=''):
     ref_id = 'P143' # imported from Wikimedia project
 
     for i, page in items:
-        page_item = page.data_item()
+        if not isinstance(page, pywikibot.ItemPage):
+            page_item = page.data_item()
+        else:
+            page_item = page
+
         qid = page_item.title()
 
         try:
